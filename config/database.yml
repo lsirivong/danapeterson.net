@@ -21,5 +21,10 @@ test:
   database: db/test.sqlite3
 
 production:
-  <<: *default
-  database: db/production.sqlite3
+  adapter:  postgresql
+  encoding: unicode
+  host:     <%= ENV['DPNET_DB_HOST'] %>
+  database: <%= ENV['DPNET_DB_NAME'] %>
+  pool:     5
+  username: <%= ENV['DPNET_DB_USER'] %>
+  password: <%= ENV['DPNET_DB_PASSWORD'] %>
