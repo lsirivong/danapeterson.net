@@ -23,7 +23,7 @@ RUN apt-get update && \
 RUN ln -sf /dev/stdout /var/log/nginx/access.log
 RUN ln -sf /dev/stderr /var/log/nginx/error.log
 
-ADD config/container/nginx-sites.conf /etc/nginx/conf.d/default.conf
+ADD config/container/nginx.conf /etc/nginx/nginx.conf
 
 VOLUME ["/var/cache/nginx"]
 
@@ -34,6 +34,7 @@ RUN gem install foreman
 WORKDIR /app
 
 ENV RAILS_ENV production
+
 ENV WEB_PORT 80
 
 ADD Gemfile /app/
@@ -46,29 +47,3 @@ ADD . /app
 EXPOSE 80 443
 
 CMD bundle exec rake assets:precompile && bundle exec rake db:migrate && foreman start -f Procfile
-
-# FROM ruby:2.2
-# 
-# MAINTAINER lenny@lenny-s.com
-# 
-# ENV RAILS_VERSION 4.2.1
-# 
-# RUN curl -sL https://deb.nodesource.com/setup_0.12 | bash - && \
-#   apt-get update && \
-#   apt-get install -y \
-#     nodejs
-# 
-# RUN gem install rails --version "$RAILS_VERSION"
-# 
-# ADD Gemfile /app/
-# ADD Gemfile.lock /app/
-# 
-# WORKDIR /app
-# 
-# RUN bundle install --deployment --jobs=4
-# 
-# ADD . /app/
-
-# EXPOSE 8080
-# 
-# CMD ["unicorn"]
