@@ -23,6 +23,8 @@ RUN apt-get update && \
 RUN ln -sf /dev/stdout /var/log/nginx/access.log
 RUN ln -sf /dev/stderr /var/log/nginx/error.log
 
+ADD config/container/nginx-sites.conf /etc/nginx/conf.d/default.conf
+
 VOLUME ["/var/cache/nginx"]
 
 # Install foreman
@@ -43,7 +45,7 @@ ADD . /app
 
 EXPOSE 80 443
 
-CMD bundle exec rake assets:precompile &&  bundle exec rake db:migrate && foreman start -f Procfile
+CMD bundle exec rake assets:precompile && bundle exec rake db:migrate && foreman start -f Procfile
 
 # FROM ruby:2.2
 # 
